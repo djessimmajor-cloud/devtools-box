@@ -3,33 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevTools Box — Outils gratuits pour développeurs</title>
-  <meta name="description" content="Boîte à outils gratuite pour développeurs : générateur de mots de passe, formateur JSON, convertisseur couleurs, lorem ipsum, encodeur Base64 et plus." />
+
+  <!-- SEO -->
+  <title>DevTools Box by Djessim — Outils gratuits pour développeurs</title>
+  <meta name="description" content="DevTools Box par Djessim : outils gratuits pour développeurs. Générateur de mots de passe, JSON, couleurs, Base64, Lorem Ipsum, Minifier CSS/JS. Aucune inscription." />
+  <meta name="keywords" content="djessim, devtools, outils développeur, générateur mot de passe, formateur JSON, convertisseur couleurs, base64, lorem ipsum, minifier css js, djessim tools, djessim dev" />
+  <meta name="author" content="Djessim" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://devtools-tau-seven.vercel.app" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DevTools Box by Djessim" />
+  <meta property="og:description" content="Outils gratuits pour développeurs par Djessim. Aucune inscription, tout tourne dans le navigateur." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devtools-tau-seven.vercel.app" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5195086331211387" crossorigin="anonymous"></script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #060608;
-      --surface: #0e0f14;
-      --surface2: #13151c;
-      --border: #1e2130;
-      --border2: #252839;
-      --accent: #7c6dfa;
-      --accent-glow: rgba(124,109,250,0.15);
-      --accent2: #06b6d4;
-      --accent2-glow: rgba(6,182,212,0.12);
-      --text: #f0f2f8;
-      --text2: #9aa3b8;
-      --muted: #4a5168;
-      --success: #22d3a0;
-      --danger: #f87171;
-      --warning: #fbbf24;
-      --radius: 14px;
-      --radius-sm: 8px;
+      --bg:        #07080f;
+      --surface:   #0d0f1a;
+      --surface2:  #111422;
+      --border:    #1c1f30;
+      --border2:   #242840;
+      --accent:    #818cf8;
+      --accent-d:  #6366f1;
+      --glow:      rgba(129,140,248,.14);
+      --cyan:      #22d3ee;
+      --cyan-glow: rgba(34,211,238,.1);
+      --text:      #eef0f8;
+      --text2:     #8b92aa;
+      --muted:     #3d4259;
+      --success:   #34d399;
+      --danger:    #f87171;
+      --warning:   #fbbf24;
+      --r:         16px;
+      --r-sm:      10px;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
@@ -39,516 +59,406 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE OVERLAY ── */
-    body::before {
+    /* ── GRAIN ── */
+    body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── GLOW BG ── */
+    .glow-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.5;
     }
+    .glow-blob.a { width: 500px; height: 500px; top: -200px; left: -100px; background: radial-gradient(circle, rgba(99,102,241,.07), transparent 70%); }
+    .glow-blob.b { width: 400px; height: 400px; bottom: 0; right: -100px; background: radial-gradient(circle, rgba(34,211,238,.05), transparent 70%); }
 
     /* ── HEADER ── */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      background: rgba(6,6,8,0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 200;
+      height: 64px;
       padding: 0 2rem;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(7,8,15,.8);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
+    /* LOGO SVG */
+    .logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+
+    .logo-mark {
+      width: 38px; height: 38px; flex-shrink: 0;
+      position: relative;
     }
 
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      box-shadow: 0 0 16px var(--accent-glow);
+    .logo-mark svg { width: 38px; height: 38px; }
+
+    .logo-name {
+      display: flex; flex-direction: column; gap: 0;
+      line-height: 1;
     }
 
-    .logo-text {
-      font-size: 1.05rem;
-      font-weight: 700;
+    .logo-name .top {
+      font-size: .7rem; font-weight: 600; letter-spacing: .14em;
+      color: var(--text2); text-transform: uppercase;
+    }
+
+    .logo-name .main {
+      font-size: 1.15rem; font-weight: 800; letter-spacing: -.03em;
       color: var(--text);
-      letter-spacing: -0.02em;
     }
 
-    .logo-text span {
-      color: var(--accent);
+    .logo-name .main span { color: var(--accent); }
+
+    .header-right { display: flex; align-items: center; gap: .8rem; }
+
+    .coffee-btn {
+      display: flex; align-items: center; gap: .35rem;
+      background: #FFDD00; color: #111;
+      font-size: .75rem; font-weight: 700;
+      padding: .4rem .85rem; border-radius: 20px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 2px 12px rgba(255,221,0,.2);
+    }
+    .coffee-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(255,221,0,.35); }
+
+    .pill-count {
+      font-size: .7rem; font-weight: 600; color: var(--text2);
+      background: var(--surface2); border: 1px solid var(--border2);
+      padding: .28rem .65rem; border-radius: 20px; letter-spacing: .04em;
     }
 
-    .header-badge {
-      font-size: 0.7rem;
-      color: var(--text2);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      letter-spacing: 0.04em;
-    }
-
-    /* ── AD BANNER TOP ── */
+    /* ── AD TOP ── */
     .ad-top {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 0.4rem 2rem;
-      text-align: center;
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      min-height: 72px;
+      display: flex; align-items: center; justify-content: center;
+      padding: .4rem 2rem;
     }
 
     /* ── HERO ── */
     .hero {
-      position: relative;
+      position: relative; z-index: 1;
       text-align: center;
-      padding: 4rem 2rem 2.5rem;
-      overflow: hidden;
+      padding: 5rem 2rem 2rem;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 300px;
-      background: radial-gradient(ellipse, rgba(124,109,250,0.08) 0%, transparent 70%);
-      pointer-events: none;
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      color: var(--accent); text-transform: uppercase;
+      background: rgba(129,140,248,.08);
+      border: 1px solid rgba(129,140,248,.2);
+      padding: .3rem .8rem; border-radius: 20px;
+      margin-bottom: 1.4rem;
     }
+
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
 
     .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.15;
-      margin-bottom: 0.8rem;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800; letter-spacing: -.05em; line-height: 1.1;
+      margin-bottom: .9rem;
     }
 
-    .hero h1 .gradient {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero h1 .g {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .hero p {
-      color: var(--text2);
-      font-size: 1rem;
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.6;
+      font-size: 1.05rem; color: var(--text2); max-width: 440px;
+      margin: 0 auto 2rem; line-height: 1.65;
     }
 
-    /* ── NAV TABS ── */
-    .nav-tabs {
-      display: flex;
-      gap: 0.4rem;
-      overflow-x: auto;
-      padding: 0 2rem 1rem;
-      justify-content: center;
-      scrollbar-width: none;
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: .4rem; flex-wrap: wrap;
+      justify-content: center; padding: 0 2rem 2rem;
+      position: relative; z-index: 1;
     }
-
-    .nav-tabs::-webkit-scrollbar { display: none; }
 
     .tab {
-      flex-shrink: 0;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text2);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 0.4rem 0.9rem;
-      cursor: pointer;
-      transition: all 0.18s;
+      font-size: .78rem; font-weight: 500;
+      color: var(--text2); background: var(--surface);
+      border: 1px solid var(--border2); border-radius: 20px;
+      padding: .38rem .9rem; cursor: pointer;
+      transition: all .15s; user-select: none;
     }
 
-    .tab:hover, .tab.active {
-      color: var(--text);
-      border-color: var(--accent);
-      background: var(--accent-glow);
-    }
+    .tab:hover { color: var(--text); border-color: var(--accent); }
+    .tab.active { color: var(--accent); border-color: var(--accent); background: var(--glow); }
 
-    /* ── LAYOUT ── */
+    /* ── PAGE LAYOUT ── */
     .page {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 2rem 4rem;
-      display: flex;
-      gap: 2rem;
-      align-items: flex-start;
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 2rem 5rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
     }
 
-    .tools-area { flex: 1; min-width: 0; }
+    .tools-col { flex: 1; min-width: 0; }
 
     .sidebar {
-      width: 168px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 80px;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      width: 172px; flex-shrink: 0;
+      position: sticky; top: 82px;
+      display: flex; flex-direction: column; gap: 1rem;
     }
 
+    /* ── AD BLOCKS ── */
+    .ad-side, .ad-mid {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .ad-mid { min-height: 88px; margin-bottom: 1.2rem; }
+    .ad-side { min-height: 260px; }
+
     /* ── GRID ── */
-    .tools-grid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.1rem;
     }
 
     /* ── CARD ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.4rem;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
+      border-radius: var(--r);
+      padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, box-shadow .2s, transform .18s;
     }
 
     .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
+      content: ''; position: absolute;
+      inset: 0; border-radius: var(--r);
+      background: linear-gradient(135deg, rgba(129,140,248,.04), transparent 60%);
+      opacity: 0; transition: opacity .2s;
+    }
+
+    .card::after {
+      content: ''; position: absolute;
+      top: 0; left: 20%; right: 20%; height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.2s;
+      opacity: 0; transition: opacity .2s;
     }
 
-    .card:hover {
-      border-color: var(--border2);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--border2);
-      transform: translateY(-1px);
+    .card:hover { border-color: var(--border2); box-shadow: 0 12px 40px rgba(0,0,0,.5); transform: translateY(-2px); }
+    .card:hover::before, .card:hover::after { opacity: 1; }
+
+    /* card header */
+    .ch { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.2rem; }
+
+    .ci {
+      width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
     }
 
-    .card:hover::before { opacity: 0.6; }
+    .ci.v { background: rgba(129,140,248,.1); box-shadow: inset 0 0 0 1px rgba(129,140,248,.15); }
+    .ci.c { background: rgba(34,211,238,.09); box-shadow: inset 0 0 0 1px rgba(34,211,238,.15); }
+    .ci.g { background: rgba(52,211,153,.09); box-shadow: inset 0 0 0 1px rgba(52,211,153,.15); }
+    .ci.o { background: rgba(251,191,36,.09); box-shadow: inset 0 0 0 1px rgba(251,191,36,.15); }
+    .ci.p { background: rgba(244,114,182,.09); box-shadow: inset 0 0 0 1px rgba(244,114,182,.15); }
+    .ci.b { background: rgba(96,165,250,.09); box-shadow: inset 0 0 0 1px rgba(96,165,250,.15); }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      margin-bottom: 1.1rem;
-    }
+    .ct { font-size: .95rem; font-weight: 700; letter-spacing: -.015em; }
 
-    .card-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .card-icon.purple { background: rgba(124,109,250,0.12); }
-    .card-icon.cyan   { background: rgba(6,182,212,0.12); }
-    .card-icon.green  { background: rgba(34,211,160,0.12); }
-    .card-icon.orange { background: rgba(251,191,36,0.12); }
-    .card-icon.pink   { background: rgba(244,114,182,0.12); }
-    .card-icon.blue   { background: rgba(96,165,250,0.12); }
-
-    .card-title {
-      font-size: 0.92rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    /* ── FORM ELEMENTS ── */
+    /* ── FORM ── */
     label {
       display: block;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.35rem;
-      margin-top: 0.85rem;
+      font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted);
+      margin-top: .9rem; margin-bottom: .32rem;
     }
 
-    input[type="text"],
-    input[type="number"],
-    textarea,
-    select {
+    input[type="text"], input[type="number"], textarea, select {
       width: 100%;
-      background: var(--bg);
+      background: rgba(0,0,0,.3);
       border: 1px solid var(--border2);
-      border-radius: var(--radius-sm);
+      border-radius: var(--r-sm);
       color: var(--text);
-      padding: 0.55rem 0.75rem;
-      font-size: 0.85rem;
-      font-family: 'JetBrains Mono', monospace;
+      padding: .55rem .75rem;
+      font-size: .84rem; font-family: 'JetBrains Mono', monospace;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      appearance: none;
+      transition: border-color .15s, box-shadow .15s;
     }
 
     input:focus, textarea:focus, select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
+      box-shadow: 0 0 0 3px var(--glow);
     }
 
-    textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    textarea { resize: vertical; min-height: 82px; line-height: 1.55; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); cursor: pointer; margin-top: .1rem; }
 
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--accent);
-      cursor: pointer;
+    /* Pills checkbox */
+    .pills { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+
+    .pill {
+      display: flex; align-items: center; gap: .28rem;
+      font-size: .75rem; font-weight: 500; color: var(--text2);
+      background: rgba(0,0,0,.25); border: 1px solid var(--border2);
+      border-radius: 20px; padding: .28rem .65rem;
+      cursor: pointer; transition: all .13s; user-select: none;
     }
 
-    /* ── CHECKBOX ROW ── */
-    .check-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.6rem;
-    }
-
-    .check-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--text2);
-      background: var(--bg);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      padding: 0.3rem 0.7rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      user-select: none;
-    }
-
-    .check-pill input { display: none; }
-
-    .check-pill:has(input:checked) {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: var(--accent-glow);
-    }
+    .pill input { display: none; }
+    .pill:has(input:checked) { color: var(--accent); border-color: var(--accent); background: var(--glow); }
 
     /* ── BUTTONS ── */
-    .btn-row {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 0.85rem;
-    }
+    .btns { display: flex; gap: .45rem; flex-wrap: wrap; margin-top: .9rem; }
 
     button {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      letter-spacing: 0.01em;
+      font-family: 'Inter', sans-serif;
+      font-size: .78rem; font-weight: 600;
+      border: none; border-radius: var(--r-sm);
+      padding: .48rem .95rem;
+      cursor: pointer; transition: all .14s;
+      letter-spacing: .01em;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 2px 12px rgba(124,109,250,0.3);
+    .btn {
+      background: var(--accent-d); color: #fff;
+      box-shadow: 0 2px 14px rgba(99,102,241,.25);
     }
+    .btn:hover { background: var(--accent); box-shadow: 0 4px 22px rgba(99,102,241,.4); transform: translateY(-1px); }
 
-    .btn-primary:hover {
-      background: #8e81fb;
-      box-shadow: 0 4px 20px rgba(124,109,250,0.4);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: var(--surface2);
-      color: var(--text2);
+    .btn2 {
+      background: var(--surface2); color: var(--text2);
       border: 1px solid var(--border2);
     }
+    .btn2:hover { color: var(--text); border-color: var(--accent); }
 
-    .btn-secondary:hover {
-      color: var(--text);
-      border-color: var(--accent);
-    }
-
-    /* ── OUTPUT BOX ── */
-    .output {
-      margin-top: 0.85rem;
-      background: var(--bg);
+    /* ── OUTPUT ── */
+    .out {
+      margin-top: .85rem; position: relative;
+      background: rgba(0,0,0,.35);
       border: 1px solid var(--border2);
-      border-radius: var(--radius-sm);
-      padding: 0.75rem;
+      border-radius: var(--r-sm);
+      padding: .72rem .75rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      line-height: 1.6;
-      color: var(--accent2);
-      word-break: break-all;
-      min-height: 2.8rem;
-      position: relative;
+      font-size: .78rem; line-height: 1.6;
+      color: var(--cyan);
+      min-height: 2.6rem; word-break: break-all;
     }
 
-    .output pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow: auto;
-      max-height: 200px;
-    }
+    .out pre { white-space: pre-wrap; word-break: break-word; overflow: auto; max-height: 190px; }
 
-    .copy-btn {
-      position: absolute;
-      top: 0.45rem;
-      right: 0.45rem;
-      background: var(--surface2);
-      color: var(--muted);
+    .cp {
+      position: absolute; top: .4rem; right: .4rem;
+      background: var(--surface2); color: var(--muted);
       border: 1px solid var(--border2);
-      padding: 0.2rem 0.55rem;
-      font-size: 0.68rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.15s;
+      padding: .18rem .5rem; font-size: .65rem;
+      border-radius: 5px; cursor: pointer; transition: all .13s;
     }
+    .cp:hover { color: var(--text); border-color: var(--accent); }
 
-    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    /* ── STRENGTH ── */
+    .str { margin-top: .55rem; }
+    .str-bar { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+    .str-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; }
+    .str-lbl { font-size: .68rem; color: var(--muted); margin-top: .28rem; }
 
-    /* ── STRENGTH BAR ── */
-    .strength-wrap { margin-top: 0.6rem; }
+    /* ── COLOR SWATCH ── */
+    .swatch { width: 38px; height: 38px; border-radius: var(--r-sm); border: 1px solid var(--border2); flex-shrink: 0; transition: background .2s; }
+    .row-in { display: flex; gap: .45rem; align-items: center; }
+    .row-in input { flex: 1; }
 
-    .strength-bar {
-      height: 3px;
-      background: var(--border2);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .strength-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.3s ease, background 0.3s;
-    }
-
-    .strength-label {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 0.3rem;
-    }
-
-    /* ── COLOR PREVIEW ── */
-    .color-swatch {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-
-    .inline-row {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .inline-row input { flex: 1; }
-
-    /* ── STATS ── */
-    .stat-chip {
-      display: inline-flex;
-      align-items: center;
-      font-size: 0.72rem;
-      color: var(--success);
-      background: rgba(34,211,160,0.08);
-      border: 1px solid rgba(34,211,160,0.2);
-      border-radius: 20px;
-      padding: 0.2rem 0.6rem;
-      margin-top: 0.5rem;
-    }
-
-    /* ── AD SIDEBAR ── */
-    .ad-side {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      min-height: 280px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* ── AD MID ── */
-    .ad-mid {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.2rem;
-      overflow: hidden;
+    /* ── STAT CHIP ── */
+    .chip {
+      display: inline-flex; align-items: center;
+      font-size: .7rem; color: var(--success);
+      background: rgba(52,211,153,.07);
+      border: 1px solid rgba(52,211,153,.18);
+      border-radius: 20px; padding: .2rem .6rem; margin-top: .5rem;
     }
 
     /* ── FOOTER ── */
     footer {
+      position: relative; z-index: 1;
       border-top: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--muted);
+      padding: 1.6rem 2rem;
+      text-align: center; font-size: .77rem; color: var(--muted);
     }
 
-    footer a { color: var(--accent); text-decoration: none; }
+    footer strong { color: var(--text2); }
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    /* ── SCROLL ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
-    @media (max-width: 768px) {
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
       .page { flex-direction: column; padding: 0 1rem 3rem; }
       .sidebar { width: 100%; position: static; }
-      .hero { padding: 2.5rem 1rem 1.5rem; }
+      .hero { padding: 3rem 1rem 1.5rem; }
       header { padding: 0 1rem; }
-      .ad-top { padding: 0.4rem 1rem; }
-      .nav-tabs { padding: 0 1rem 1rem; justify-content: flex-start; }
+      .pill-count { display: none; }
     }
   </style>
 </head>
 <body>
 
+<div class="glow-blob a"></div>
+<div class="glow-blob b"></div>
+
 <!-- HEADER -->
 <header>
   <a class="logo" href="#">
-    <div class="logo-icon">⚡</div>
-    <span class="logo-text">Dev<span>Tools</span> Box</span>
+    <!-- LOGO SVG -->
+    <div class="logo-mark">
+      <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#818cf8"/>
+            <stop offset="100%" stop-color="#22d3ee"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#0891b2"/>
+          </linearGradient>
+        </defs>
+        <!-- fond arrondi -->
+        <rect width="38" height="38" rx="10" fill="url(#lg2)" opacity=".15"/>
+        <rect width="38" height="38" rx="10" fill="none" stroke="url(#lg1)" stroke-width="1" opacity=".4"/>
+        <!-- accolade gauche -->
+        <path d="M13 9 C9 9 8 11 8 13 L8 17 C8 19 7 20 5.5 20 C7 20 8 21 8 23 L8 27 C8 29 9 31 13 31" stroke="url(#lg1)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <!-- accolade droite -->
+        <path d="M25 9 C29 9 30 11 30 13 L30 17 C30 19 31 20 32.5 20 C31 20 30 21 30 23 L30 27 C30 29 29 31 25 31" stroke="url(#lg1)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <!-- slash -->
+        <line x1="22" y1="12" x2="16" y2="28" stroke="url(#lg1)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="logo-name">
+      <span class="top">by djessim</span>
+      <span class="main">Dev<span>Tools</span> Box</span>
+    </div>
   </a>
-  <a href="https://www.buymeacoffee.com" target="_blank" style="display:flex;align-items:center;gap:0.4rem;background:#FFDD00;color:#000;font-size:0.78rem;font-weight:700;padding:0.4rem 0.9rem;border-radius:20px;text-decoration:none;transition:opacity 0.15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">☕ Buy me a coffee</a>
+
+  <div class="header-right">
+    <span class="pill-count">6 outils</span>
+    <a class="coffee-btn" href="https://www.buymeacoffee.com" target="_blank">☕ Buy me a coffee</a>
+  </div>
 </header>
 
 <!-- AD TOP -->
@@ -563,13 +473,14 @@
 </div>
 
 <!-- HERO -->
-<div class="hero">
-  <h1>Outils dev,<br><span class="gradient">rapides et gratuits.</span></h1>
-  <p>Pas d'inscription. Pas de tracking. Tout tourne dans votre navigateur.</p>
-</div>
+<section class="hero">
+  <div class="hero-eyebrow">Djessim · Outils dev gratuits</div>
+  <h1>Code plus vite,<br><span class="g">sans friction.</span></h1>
+  <p>6 outils pour développeurs, 100% gratuits. Pas d'inscription, pas de tracking, tout tourne dans votre navigateur.</p>
+</section>
 
 <!-- TABS -->
-<div class="nav-tabs">
+<div class="tabs">
   <div class="tab active">Tous</div>
   <div class="tab">Sécurité</div>
   <div class="tab">Données</div>
@@ -580,7 +491,7 @@
 
 <!-- PAGE -->
 <div class="page">
-  <div class="tools-area">
+  <div class="tools-col">
 
     <!-- AD MID -->
     <div class="ad-mid">
@@ -593,173 +504,164 @@
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <div class="tools-grid">
+    <div class="grid">
 
       <!-- 1. MOT DE PASSE -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon purple">🔑</div>
-          <div class="card-title">Générateur de mot de passe</div>
+        <div class="ch">
+          <div class="ci v">🔑</div>
+          <div class="ct">Générateur de mot de passe</div>
         </div>
 
-        <label>Longueur : <span id="pwd-len-label">16</span> caractères</label>
-        <input type="range" min="8" max="64" value="16" id="pwd-length"
-          oninput="document.getElementById('pwd-len-label').textContent=this.value;genPassword()">
+        <label>Longueur : <span id="pl">16</span> caractères</label>
+        <input type="range" min="8" max="64" value="16" id="pwd-len"
+          oninput="document.getElementById('pl').textContent=this.value;genPwd()">
 
         <label>Options</label>
-        <div class="check-row">
-          <label class="check-pill"><input type="checkbox" id="pwd-upper" checked> Majuscules</label>
-          <label class="check-pill"><input type="checkbox" id="pwd-lower" checked> Minuscules</label>
-          <label class="check-pill"><input type="checkbox" id="pwd-digits" checked> Chiffres</label>
-          <label class="check-pill"><input type="checkbox" id="pwd-symbols" checked> Symboles</label>
+        <div class="pills">
+          <label class="pill"><input type="checkbox" id="pu" checked> Majuscules</label>
+          <label class="pill"><input type="checkbox" id="pp" checked> Minuscules</label>
+          <label class="pill"><input type="checkbox" id="pd" checked> Chiffres</label>
+          <label class="pill"><input type="checkbox" id="ps" checked> Symboles</label>
         </div>
 
-        <div class="btn-row">
-          <button class="btn-primary" onclick="genPassword()">Générer</button>
+        <div class="btns">
+          <button class="btn" onclick="genPwd()">Générer</button>
         </div>
 
-        <div class="output" id="pwd-out">
-          <span id="pwd-text">Cliquez sur Générer</span>
-          <button class="copy-btn" onclick="copyEl('pwd-text')">Copier</button>
+        <div class="out" id="pwd-out">
+          <span id="pwd-txt">Cliquez sur Générer</span>
+          <button class="cp" onclick="cpEl('pwd-txt')">Copier</button>
         </div>
 
-        <div class="strength-wrap">
-          <div class="strength-bar"><div class="strength-fill" id="pwd-strength" style="width:0%"></div></div>
-          <div class="strength-label" id="pwd-strength-label"></div>
+        <div class="str">
+          <div class="str-bar"><div class="str-fill" id="pwd-sf" style="width:0%"></div></div>
+          <div class="str-lbl" id="pwd-sl"></div>
         </div>
       </div>
 
       <!-- 2. JSON -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon cyan">📄</div>
-          <div class="card-title">Formateur JSON</div>
+        <div class="ch">
+          <div class="ci c">📄</div>
+          <div class="ct">Formateur JSON</div>
         </div>
 
         <label>JSON brut</label>
-        <textarea id="json-in" placeholder='{"clé":"valeur","liste":[1,2,3]}'></textarea>
+        <textarea id="jin" placeholder='{"clé":"valeur","liste":[1,2,3]}'></textarea>
 
-        <div class="btn-row">
-          <button class="btn-primary" onclick="formatJSON()">Formater</button>
-          <button class="btn-secondary" onclick="minifyJSON()">Minifier</button>
-          <button class="btn-secondary" onclick="document.getElementById('json-in').value='';document.getElementById('json-out').querySelector('pre').textContent=''">Vider</button>
+        <div class="btns">
+          <button class="btn" onclick="fmtJson()">Formater</button>
+          <button class="btn2" onclick="minJson()">Minifier</button>
+          <button class="btn2" onclick="document.getElementById('jin').value='';document.getElementById('jpre').textContent=''">Vider</button>
         </div>
 
-        <div class="output" id="json-out">
-          <pre id="json-pre"></pre>
-          <button class="copy-btn" onclick="copyPre('json-pre')">Copier</button>
-        </div>
+        <div class="out"><pre id="jpre"></pre><button class="cp" onclick="cpPre('jpre')">Copier</button></div>
       </div>
 
       <!-- 3. COULEURS -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon pink">🎨</div>
-          <div class="card-title">Convertisseur de couleurs</div>
+        <div class="ch">
+          <div class="ci p">🎨</div>
+          <div class="ct">Convertisseur de couleurs</div>
         </div>
 
         <label>HEX</label>
-        <div class="inline-row">
-          <input type="text" id="color-hex" placeholder="#7c6dfa" oninput="hexToAll()">
-          <div class="color-swatch" id="color-preview" style="background:#7c6dfa"></div>
+        <div class="row-in">
+          <input type="text" id="chex" placeholder="#818cf8" oninput="hexAll()">
+          <div class="swatch" id="cswatch" style="background:#818cf8"></div>
         </div>
 
         <label>RGB</label>
-        <input type="text" id="color-rgb" placeholder="124, 109, 250" oninput="rgbToAll()">
+        <input type="text" id="crgb" placeholder="129, 140, 248" oninput="rgbAll()">
 
         <label>HSL</label>
-        <input type="text" id="color-hsl" placeholder="245°, 93%, 70%" readonly style="cursor:default;color:var(--muted)">
+        <input type="text" id="chsl" readonly style="cursor:default;color:var(--muted)">
 
-        <label>Résultat CSS</label>
-        <div class="output" id="color-css">
-          <pre id="color-pre"></pre>
-          <button class="copy-btn" onclick="copyPre('color-pre')">Copier</button>
-        </div>
+        <label>CSS</label>
+        <div class="out"><pre id="cpre"></pre><button class="cp" onclick="cpPre('cpre')">Copier</button></div>
       </div>
 
       <!-- 4. BASE64 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon orange">🔢</div>
-          <div class="card-title">Encodeur / Décodeur Base64</div>
+        <div class="ch">
+          <div class="ci o">🔢</div>
+          <div class="ct">Encodeur / Décodeur Base64</div>
         </div>
 
         <label>Texte ou Base64</label>
-        <textarea id="b64-in" placeholder="Entrez du texte ou du Base64..."></textarea>
+        <textarea id="b64in" placeholder="Entrez du texte ou du Base64..."></textarea>
 
-        <div class="btn-row">
-          <button class="btn-primary" onclick="encodeB64()">Encoder →</button>
-          <button class="btn-secondary" onclick="decodeB64()">← Décoder</button>
+        <div class="btns">
+          <button class="btn" onclick="encB64()">Encoder →</button>
+          <button class="btn2" onclick="decB64()">← Décoder</button>
         </div>
 
-        <div class="output" id="b64-out">
-          <pre id="b64-pre"></pre>
-          <button class="copy-btn" onclick="copyPre('b64-pre')">Copier</button>
-        </div>
+        <div class="out"><pre id="b64pre"></pre><button class="cp" onclick="cpPre('b64pre')">Copier</button></div>
       </div>
 
       <!-- 5. LOREM -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon green">📝</div>
-          <div class="card-title">Générateur Lorem Ipsum</div>
+        <div class="ch">
+          <div class="ci g">📝</div>
+          <div class="ct">Générateur Lorem Ipsum</div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
           <div>
             <label>Paragraphes</label>
-            <input type="number" id="lorem-count" value="2" min="1" max="20">
+            <input type="number" id="lcount" value="2" min="1" max="20">
           </div>
           <div>
             <label>Style</label>
-            <select id="lorem-style">
+            <select id="lstyle">
               <option value="classic">Classique</option>
               <option value="short">Court</option>
             </select>
           </div>
         </div>
 
-        <div class="btn-row">
-          <button class="btn-primary" onclick="genLorem()">Générer</button>
+        <div class="btns">
+          <button class="btn" onclick="genLorem()">Générer</button>
         </div>
 
-        <div class="output" style="max-height:180px;overflow:auto" id="lorem-out">
-          <pre id="lorem-pre"></pre>
-          <button class="copy-btn" onclick="copyPre('lorem-pre')">Copier</button>
+        <div class="out" style="max-height:175px;overflow:auto">
+          <pre id="lpre"></pre>
+          <button class="cp" onclick="cpPre('lpre')">Copier</button>
         </div>
       </div>
 
       <!-- 6. MINIFIER -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-icon blue">⚡</div>
-          <div class="card-title">Minifier CSS / JS</div>
+        <div class="ch">
+          <div class="ci b">⚡</div>
+          <div class="ct">Minifier CSS / JS</div>
         </div>
 
         <label>Code source</label>
-        <textarea id="minify-in" placeholder="Collez votre CSS ou JS ici..." style="min-height:100px"></textarea>
+        <textarea id="minin" placeholder="Collez votre CSS ou JS ici..." style="min-height:100px"></textarea>
 
-        <div class="btn-row">
-          <button class="btn-primary" onclick="minifyCode()">Minifier</button>
-          <button class="btn-secondary" onclick="document.getElementById('minify-in').value='';document.getElementById('minify-pre').textContent='';document.getElementById('minify-stat').textContent=''">Vider</button>
+        <div class="btns">
+          <button class="btn" onclick="minCode()">Minifier</button>
+          <button class="btn2" onclick="document.getElementById('minin').value='';document.getElementById('mpre').textContent='';document.getElementById('mstat').innerHTML=''">Vider</button>
         </div>
 
-        <div id="minify-stat"></div>
+        <div id="mstat"></div>
 
-        <div class="output" style="max-height:140px;overflow:auto" id="minify-out">
-          <pre id="minify-pre"></pre>
-          <button class="copy-btn" onclick="copyPre('minify-pre')">Copier</button>
+        <div class="out" style="max-height:135px;overflow:auto">
+          <pre id="mpre"></pre>
+          <button class="cp" onclick="cpPre('mpre')">Copier</button>
         </div>
       </div>
 
-    </div>
-  </div>
+    </div><!-- /grid -->
+  </div><!-- /tools-col -->
 
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="ad-side">
       <ins class="adsbygoogle"
-           style="display:inline-block;width:160px;height:280px"
+           style="display:inline-block;width:160px;height:260px"
            data-ad-client="ca-pub-5195086331211387"
            data-ad-slot="5985833773"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -767,167 +669,117 @@
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer>
-  &copy; 2026 DevTools Box &mdash; Aucune donnée stockée &mdash; Tout tourne en local
+  Fait avec ❤️ par <strong>Djessim</strong> · DevTools Box · Aucune donnée stockée · Tout tourne en local
 </footer>
+
+<!-- STRUCTURED DATA pour Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DevTools Box by Djessim",
+  "url": "https://devtools-tau-seven.vercel.app",
+  "description": "Outils gratuits pour développeurs par Djessim",
+  "author": { "@type": "Person", "name": "Djessim" }
+}
+</script>
 
 <script>
 // ── COPY ──
-function copyEl(id) {
-  const el = document.getElementById(id);
-  const text = (el.innerText || el.textContent).replace('Copier','').trim();
-  navigator.clipboard.writeText(text).then(() => flash(el.closest('.output').querySelector('.copy-btn')));
+function cpEl(id) {
+  const t = (document.getElementById(id).innerText||'').replace('Copier','').trim();
+  navigator.clipboard.writeText(t).then(()=>flash(document.getElementById(id).closest('.out').querySelector('.cp')));
 }
-function copyPre(id) {
-  const text = document.getElementById(id).textContent.trim();
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById(id).closest('.output').querySelector('.copy-btn');
-    flash(btn);
-  });
+function cpPre(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent.trim())
+    .then(()=>flash(document.getElementById(id).closest('.out').querySelector('.cp')));
 }
-function flash(btn) {
-  if (!btn) return;
-  const orig = btn.textContent;
-  btn.textContent = 'Copié ✓';
-  btn.style.color = 'var(--success)';
-  setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1600);
-}
+function flash(btn){ if(!btn)return; const o=btn.textContent; btn.textContent='Copié ✓'; btn.style.color='var(--success)'; setTimeout(()=>{btn.textContent=o;btn.style.color='';},1600); }
 
 // ── PASSWORD ──
-function genPassword() {
-  const len = +document.getElementById('pwd-length').value;
-  const upper = document.getElementById('pwd-upper').checked;
-  const lower = document.getElementById('pwd-lower').checked;
-  const digits = document.getElementById('pwd-digits').checked;
-  const symbols = document.getElementById('pwd-symbols').checked;
-
-  let chars = '';
-  if (upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  if (lower) chars += 'abcdefghijklmnopqrstuvwxyz';
-  if (digits) chars += '0123456789';
-  if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-  if (!chars) { document.getElementById('pwd-text').textContent = 'Sélectionnez une option'; return; }
-
-  const arr = new Uint32Array(len);
-  crypto.getRandomValues(arr);
-  const pwd = Array.from(arr, v => chars[v % chars.length]).join('');
-  document.getElementById('pwd-text').textContent = pwd;
-
-  let score = [upper, lower, digits, symbols].filter(Boolean).length;
-  if (len >= 16) score++; if (len >= 24) score++;
-  const pct = Math.min(100, score * 17);
-  const colors = ['#f87171','#fb923c','#fbbf24','#34d399','#7c6dfa'];
-  const labels = ['Très faible','Faible','Moyen','Fort','Très fort'];
-  const idx = Math.min(4, Math.floor(score * 0.75));
-  document.getElementById('pwd-strength').style.width = pct + '%';
-  document.getElementById('pwd-strength').style.background = colors[idx];
-  document.getElementById('pwd-strength-label').textContent = labels[idx];
+function genPwd(){
+  const len=+document.getElementById('pwd-len').value;
+  let c='';
+  if(document.getElementById('pu').checked) c+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(document.getElementById('pp').checked) c+='abcdefghijklmnopqrstuvwxyz';
+  if(document.getElementById('pd').checked) c+='0123456789';
+  if(document.getElementById('ps').checked) c+='!@#$%^&*()_+-=[]{}|;:,.<>?';
+  if(!c){document.getElementById('pwd-txt').textContent='Sélectionnez une option';return;}
+  const a=new Uint32Array(len); crypto.getRandomValues(a);
+  document.getElementById('pwd-txt').textContent=Array.from(a,v=>c[v%c.length]).join('');
+  let sc=[document.getElementById('pu'),document.getElementById('pp'),document.getElementById('pd'),document.getElementById('ps')].filter(x=>x.checked).length;
+  if(len>=16)sc++; if(len>=24)sc++;
+  const pct=Math.min(100,sc*17);
+  const cols=['#f87171','#fb923c','#fbbf24','#34d399','#818cf8'];
+  const labs=['Très faible','Faible','Moyen','Fort','Très fort'];
+  const i=Math.min(4,Math.floor(sc*.75));
+  document.getElementById('pwd-sf').style.width=pct+'%';
+  document.getElementById('pwd-sf').style.background=cols[i];
+  document.getElementById('pwd-sl').textContent=labs[i];
 }
 
 // ── JSON ──
-function formatJSON() {
-  try {
-    document.getElementById('json-pre').textContent = JSON.stringify(JSON.parse(document.getElementById('json-in').value), null, 2);
-  } catch(e) { document.getElementById('json-pre').textContent = '// Erreur : ' + e.message; }
-}
-function minifyJSON() {
-  try {
-    document.getElementById('json-pre').textContent = JSON.stringify(JSON.parse(document.getElementById('json-in').value));
-  } catch(e) { document.getElementById('json-pre').textContent = '// Erreur : ' + e.message; }
-}
+function fmtJson(){try{document.getElementById('jpre').textContent=JSON.stringify(JSON.parse(document.getElementById('jin').value),null,2);}catch(e){document.getElementById('jpre').textContent='// Erreur : '+e.message;}}
+function minJson(){try{document.getElementById('jpre').textContent=JSON.stringify(JSON.parse(document.getElementById('jin').value));}catch(e){document.getElementById('jpre').textContent='// Erreur : '+e.message;}}
 
 // ── COLORS ──
-function hexToAll() {
-  let hex = document.getElementById('color-hex').value.trim();
-  if (!hex.startsWith('#')) hex = '#' + hex;
-  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
-  document.getElementById('color-preview').style.background = hex;
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  document.getElementById('color-rgb').value = `${r}, ${g}, ${b}`;
-  const [h,s,l] = rgbToHsl(r,g,b);
-  document.getElementById('color-hsl').value = `${h}°, ${s}%, ${l}%`;
-  document.getElementById('color-pre').textContent = `--color: ${hex};\nrgb(${r}, ${g}, ${b})\nhsl(${h}, ${s}%, ${l}%)`;
+function hexAll(){
+  let h=document.getElementById('chex').value.trim();
+  if(!h.startsWith('#'))h='#'+h;
+  if(!/^#[0-9a-fA-F]{6}$/.test(h))return;
+  document.getElementById('cswatch').style.background=h;
+  const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
+  document.getElementById('crgb').value=`${r}, ${g}, ${b}`;
+  const [hh,s,l]=toHsl(r,g,b);
+  document.getElementById('chsl').value=`${hh}°, ${s}%, ${l}%`;
+  document.getElementById('cpre').textContent=`--color: ${h};\nrgb(${r}, ${g}, ${b})\nhsl(${hh}, ${s}%, ${l}%)`;
 }
-function rgbToAll() {
-  const parts = document.getElementById('color-rgb').value.split(',').map(x => parseInt(x.trim()));
-  if (parts.length !== 3 || parts.some(isNaN)) return;
-  const [r,g,b] = parts;
-  const hex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
-  document.getElementById('color-hex').value = hex;
-  document.getElementById('color-preview').style.background = hex;
-  const [h,s,l] = rgbToHsl(r,g,b);
-  document.getElementById('color-hsl').value = `${h}°, ${s}%, ${l}%`;
-  document.getElementById('color-pre').textContent = `--color: ${hex};\nrgb(${r}, ${g}, ${b})\nhsl(${h}, ${s}%, ${l}%)`;
+function rgbAll(){
+  const p=document.getElementById('crgb').value.split(',').map(x=>parseInt(x.trim()));
+  if(p.length!==3||p.some(isNaN))return;
+  const [r,g,b]=p;
+  const h='#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+  document.getElementById('chex').value=h;
+  document.getElementById('cswatch').style.background=h;
+  const [hh,s,l]=toHsl(r,g,b);
+  document.getElementById('chsl').value=`${hh}°, ${s}%, ${l}%`;
+  document.getElementById('cpre').textContent=`--color: ${h};\nrgb(${r}, ${g}, ${b})\nhsl(${hh}, ${s}%, ${l}%)`;
 }
-function rgbToHsl(r,g,b) {
-  r/=255; g/=255; b/=255;
-  const max=Math.max(r,g,b), min=Math.min(r,g,b);
-  let h=0,s=0,l=(max+min)/2;
-  if (max !== min) {
-    const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
-    switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}
-    h=Math.round(h*60); s=Math.round(s*100); l=Math.round(l*100);
-  }
-  return [h,s,l];
+function toHsl(r,g,b){
+  r/=255;g/=255;b/=255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+  let h=0,s=0,l=(mx+mn)/2;
+  if(mx!==mn){const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}h=Math.round(h*60);s=Math.round(s*100);l=Math.round(l*100);}
+  return[h,s,l];
 }
 
 // ── BASE64 ──
-function encodeB64() {
-  try { document.getElementById('b64-pre').textContent = btoa(unescape(encodeURIComponent(document.getElementById('b64-in').value))); }
-  catch(e) { document.getElementById('b64-pre').textContent = 'Erreur : ' + e.message; }
-}
-function decodeB64() {
-  try { document.getElementById('b64-pre').textContent = decodeURIComponent(escape(atob(document.getElementById('b64-in').value.trim()))); }
-  catch(e) { document.getElementById('b64-pre').textContent = 'Base64 invalide'; }
-}
+function encB64(){try{document.getElementById('b64pre').textContent=btoa(unescape(encodeURIComponent(document.getElementById('b64in').value)));}catch(e){document.getElementById('b64pre').textContent='Erreur : '+e.message;}}
+function decB64(){try{document.getElementById('b64pre').textContent=decodeURIComponent(escape(atob(document.getElementById('b64in').value.trim())));}catch(e){document.getElementById('b64pre').textContent='Base64 invalide';}}
 
 // ── LOREM ──
-const LOREM = [
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
-  "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-  "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
-  "Fusce dapibus tellus ac cursus commodo, tortor mauris condimentum nibh.",
-  "Nullam quis risus eget urna mollis ornare vel eu leo.",
-  "Cras mattis consectetur purus sit amet fermentum.",
-  "Donec sed odio dui, vestibulum ante ipsum primis in faucibus.",
-];
-function genLorem() {
-  const count = Math.min(20, Math.max(1, +document.getElementById('lorem-count').value));
-  const short = document.getElementById('lorem-style').value === 'short';
-  let out = '';
-  for (let i = 0; i < count; i++) {
-    const n = short ? 2 : 4;
-    out += Array.from({length:n}, (_,j) => LOREM[(i*n+j) % LOREM.length]).join(' ') + '\n\n';
-  }
-  document.getElementById('lorem-pre').textContent = out.trim();
+const LR=['Lorem ipsum dolor sit amet, consectetur adipiscing elit.','Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.','Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.','Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.','Praesent commodo cursus magna, vel scelerisque nisl consectetur et.','Fusce dapibus tellus ac cursus commodo, tortor mauris condimentum nibh.','Nullam quis risus eget urna mollis ornare vel eu leo.','Cras mattis consectetur purus sit amet fermentum.','Donec sed odio dui, vestibulum ante ipsum primis in faucibus.'];
+function genLorem(){
+  const n=Math.min(20,Math.max(1,+document.getElementById('lcount').value));
+  const sh=document.getElementById('lstyle').value==='short';
+  let o='';
+  for(let i=0;i<n;i++){const c=sh?2:4;o+=Array.from({length:c},(_,j)=>LR[(i*c+j)%LR.length]).join(' ')+'\n\n';}
+  document.getElementById('lpre').textContent=o.trim();
 }
 
 // ── MINIFY ──
-function minifyCode() {
-  const src = document.getElementById('minify-in').value;
-  const orig = src.length;
-  const result = src
-    .replace(/\/\*[\s\S]*?\*\//g,'')
-    .replace(/\/\/[^\n]*/g,'')
-    .replace(/\s*([{}:;,>~+])\s*/g,'$1')
-    .replace(/\s*\n\s*/g,'')
-    .replace(/\s{2,}/g,' ')
-    .trim();
-  document.getElementById('minify-pre').textContent = result;
-  if (orig) {
-    const saved = orig - result.length;
-    const pct = Math.round(saved/orig*100);
-    const chip = document.getElementById('minify-stat');
-    chip.innerHTML = `<span class="stat-chip">-${saved} octets (-${pct}%)</span>`;
-  }
+function minCode(){
+  const src=document.getElementById('minin').value;
+  const orig=src.length;
+  const res=src.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\/\/[^\n]*/g,'').replace(/\s*([{}:;,>~+])\s*/g,'$1').replace(/\s*\n\s*/g,'').replace(/\s{2,}/g,' ').trim();
+  document.getElementById('mpre').textContent=res;
+  if(orig){const sv=orig-res.length;document.getElementById('mstat').innerHTML=`<span class="chip">-${sv} octets (-${Math.round(sv/orig*100)}%)</span>`;}
 }
 
 // Init
-genPassword();
-hexToAll();
+genPwd(); hexAll();
 </script>
 </body>
 </html>
