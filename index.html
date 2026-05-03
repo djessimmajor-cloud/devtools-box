@@ -5,222 +5,197 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevTools Box — Outils gratuits pour développeurs</title>
   <meta name="description" content="Boîte à outils gratuite pour développeurs : générateur de mots de passe, formateur JSON, convertisseur couleurs, lorem ipsum, encodeur Base64 et plus." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --border: #2a2d3e;
-      --accent: #6c63ff;
-      --accent2: #00d2ff;
-      --text: #e2e8f0;
-      --muted: #8892a4;
-      --success: #10b981;
-      --radius: 12px;
+      --bg: #060608;
+      --surface: #0e0f14;
+      --surface2: #13151c;
+      --border: #1e2130;
+      --border2: #252839;
+      --accent: #7c6dfa;
+      --accent-glow: rgba(124,109,250,0.15);
+      --accent2: #06b6d4;
+      --accent2-glow: rgba(6,182,212,0.12);
+      --text: #f0f2f8;
+      --text2: #9aa3b8;
+      --muted: #4a5168;
+      --success: #22d3a0;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --radius: 14px;
+      --radius-sm: 8px;
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── HEADER ── */
     header {
-      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(6,6,8,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
+      padding: 0 2rem;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
 
     .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .logo-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span {
+      color: var(--accent);
+    }
+
+    .header-badge {
+      font-size: 0.7rem;
+      color: var(--text2);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── AD BANNER TOP ── */
+    .ad-top {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.4rem 2rem;
+      text-align: center;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 4rem 2rem 2.5rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(124,109,250,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .tagline {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    /* Ad banner top */
-    .ad-banner {
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      text-align: center;
-      padding: 0.5rem;
-      color: var(--muted);
-      font-size: 0.75rem;
-      margin: 1rem 2rem 0;
-    }
-
-    .ad-banner ins {
-      display: block;
-    }
-
-    main {
-      max-width: 1100px;
+    .hero p {
+      color: var(--text2);
+      font-size: 1rem;
+      max-width: 480px;
       margin: 0 auto;
-      padding: 2rem;
+      line-height: 1.6;
     }
 
-    h2.section-title {
-      font-size: 1rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 1.2rem;
+    /* ── NAV TABS ── */
+    .nav-tabs {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding: 0 2rem 1rem;
+      justify-content: center;
+      scrollbar-width: none;
     }
 
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
 
-    .card {
+    .tab {
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text2);
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      transition: border-color 0.2s;
-    }
-
-    .card:hover { border-color: var(--accent); }
-
-    .card h3 {
-      font-size: 1rem;
-      margin-bottom: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .card h3 .icon {
-      font-size: 1.2rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-      margin-top: 0.7rem;
-    }
-
-    input[type="text"], input[type="number"], textarea, select {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      padding: 0.5rem 0.7rem;
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-
-    textarea { resize: vertical; min-height: 80px; }
-
-    .row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 0.7rem; }
-
-    .checkbox-row { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.5rem; }
-    .checkbox-row label { display: flex; align-items: center; gap: 0.3rem; margin: 0; color: var(--text); font-size: 0.85rem; cursor: pointer; }
-
-    button {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
+      border-radius: 20px;
+      padding: 0.4rem 0.9rem;
       cursor: pointer;
-      transition: opacity 0.2s;
-      white-space: nowrap;
+      transition: all 0.18s;
     }
 
-    button:hover { opacity: 0.85; }
-
-    button.secondary {
-      background: var(--border);
+    .tab:hover, .tab.active {
       color: var(--text);
+      border-color: var(--accent);
+      background: var(--accent-glow);
     }
 
-    .output-box {
-      margin-top: 0.8rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.7rem;
-      font-family: 'Cascadia Code', 'Courier New', monospace;
-      font-size: 0.82rem;
-      word-break: break-all;
-      min-height: 2.5rem;
-      color: var(--accent2);
-      position: relative;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 0.4rem;
-      right: 0.4rem;
-      background: var(--border);
-      color: var(--muted);
-      padding: 0.2rem 0.5rem;
-      font-size: 0.7rem;
-      border-radius: 5px;
-    }
-
-    .copy-btn:hover { color: var(--text); }
-
-    .color-preview {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .strength-bar {
-      height: 4px;
-      border-radius: 2px;
-      margin-top: 0.4rem;
-      background: var(--border);
-      overflow: hidden;
-    }
-
-    .strength-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.3s, background 0.3s;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: var(--muted);
-      font-size: 0.8rem;
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
-    }
-
-    /* Ad sidebar */
-    .layout {
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
       display: flex;
       gap: 2rem;
       align-items: flex-start;
@@ -229,48 +204,355 @@
     .tools-area { flex: 1; min-width: 0; }
 
     .sidebar {
-      width: 160px;
+      width: 168px;
       flex-shrink: 0;
       position: sticky;
       top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .sidebar .ad-side {
+    /* ── GRID ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* ── CARD ── */
+    .card {
       background: var(--surface);
-      border: 1px dashed var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      text-align: center;
-      padding: 0.5rem;
-      color: var(--muted);
-      font-size: 0.7rem;
-      min-height: 300px;
+      padding: 1.4rem;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--border2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--border2);
+      transform: translateY(-1px);
+    }
+
+    .card:hover::before { opacity: 0.6; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      gap: 0.3rem;
+      font-size: 1.1rem;
+      flex-shrink: 0;
     }
 
-    @media (max-width: 700px) {
-      .layout { flex-direction: column; }
+    .card-icon.purple { background: rgba(124,109,250,0.12); }
+    .card-icon.cyan   { background: rgba(6,182,212,0.12); }
+    .card-icon.green  { background: rgba(34,211,160,0.12); }
+    .card-icon.orange { background: rgba(251,191,36,0.12); }
+    .card-icon.pink   { background: rgba(244,114,182,0.12); }
+    .card-icon.blue   { background: rgba(96,165,250,0.12); }
+
+    .card-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+      margin-top: 0.85rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* ── CHECKBOX ROW ── */
+    .check-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+    }
+
+    .check-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text2);
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .check-pill input { display: none; }
+
+    .check-pill:has(input:checked) {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.85rem;
+    }
+
+    button {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(124,109,250,0.3);
+    }
+
+    .btn-primary:hover {
+      background: #8e81fb;
+      box-shadow: 0 4px 20px rgba(124,109,250,0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text2);
+      border: 1px solid var(--border2);
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* ── OUTPUT BOX ── */
+    .output {
+      margin-top: 0.85rem;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--accent2);
+      word-break: break-all;
+      min-height: 2.8rem;
+      position: relative;
+    }
+
+    .output pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow: auto;
+      max-height: 200px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.45rem;
+      right: 0.45rem;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border2);
+      padding: 0.2rem 0.55rem;
+      font-size: 0.68rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+    /* ── STRENGTH BAR ── */
+    .strength-wrap { margin-top: 0.6rem; }
+
+    .strength-bar {
+      height: 3px;
+      background: var(--border2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s ease, background 0.3s;
+    }
+
+    .strength-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── COLOR PREVIEW ── */
+    .color-swatch {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border2);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .inline-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .inline-row input { flex: 1; }
+
+    /* ── STATS ── */
+    .stat-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--success);
+      background: rgba(34,211,160,0.08);
+      border: 1px solid rgba(34,211,160,0.2);
+      border-radius: 20px;
+      padding: 0.2rem 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ── AD SIDEBAR ── */
+    .ad-side {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── AD MID ── */
+    .ad-mid {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    @media (max-width: 768px) {
+      .page { flex-direction: column; padding: 0 1rem 3rem; }
       .sidebar { width: 100%; position: static; }
-      main { padding: 1rem; }
-      header { padding: 0.8rem 1rem; }
-      .ad-banner { margin: 0.5rem 1rem 0; }
+      .hero { padding: 2.5rem 1rem 1.5rem; }
+      header { padding: 0 1rem; }
+      .ad-top { padding: 0.4rem 1rem; }
+      .nav-tabs { padding: 0 1rem 1rem; justify-content: flex-start; }
     }
   </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-  <div>
-    <div class="logo">DevTools Box</div>
-    <div class="tagline">Outils gratuits pour développeurs</div>
-  </div>
+  <a class="logo" href="#">
+    <div class="logo-icon">⚡</div>
+    <span class="logo-text">Dev<span>Tools</span> Box</span>
+  </a>
+  <span class="header-badge">6 OUTILS GRATUITS</span>
 </header>
 
-<!-- Pub bandeau haut (display, pas vidéo) -->
-<div class="ad-banner">
+<!-- AD TOP -->
+<div class="ad-top">
   <ins class="adsbygoogle"
        style="display:block"
        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
@@ -280,169 +562,238 @@
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-<main>
-  <div class="layout">
-    <div class="tools-area">
+<!-- HERO -->
+<div class="hero">
+  <h1>Outils dev,<br><span class="gradient">rapides et gratuits.</span></h1>
+  <p>Pas d'inscription. Pas de tracking. Tout tourne dans votre navigateur.</p>
+</div>
 
-      <h2 class="section-title">Outils disponibles</h2>
+<!-- TABS -->
+<div class="nav-tabs">
+  <div class="tab active">Tous</div>
+  <div class="tab">Sécurité</div>
+  <div class="tab">Données</div>
+  <div class="tab">Couleurs</div>
+  <div class="tab">Texte</div>
+  <div class="tab">Code</div>
+</div>
 
-      <div class="tools-grid">
+<!-- PAGE -->
+<div class="page">
+  <div class="tools-area">
 
-        <!-- 1. Générateur de mot de passe -->
-        <div class="card">
-          <h3><span class="icon">🔑</span> Générateur de mot de passe</h3>
-          <label>Longueur : <span id="pwd-len-label">16</span></label>
-          <input type="range" min="8" max="64" value="16" id="pwd-length" style="width:100%;accent-color:var(--accent)" oninput="document.getElementById('pwd-len-label').textContent=this.value;genPassword()">
-          <div class="checkbox-row">
-            <label><input type="checkbox" id="pwd-upper" checked> Majuscules</label>
-            <label><input type="checkbox" id="pwd-lower" checked> Minuscules</label>
-            <label><input type="checkbox" id="pwd-digits" checked> Chiffres</label>
-            <label><input type="checkbox" id="pwd-symbols" checked> Symboles</label>
-          </div>
-          <div class="row">
-            <button onclick="genPassword()">Générer</button>
-          </div>
-          <div class="output-box" id="pwd-out" style="padding-right:4.5rem">
-            <span id="pwd-text">Cliquez sur Générer</span>
-            <button class="copy-btn" onclick="copyEl('pwd-text')">Copier</button>
-          </div>
-          <div class="strength-bar"><div class="strength-fill" id="pwd-strength" style="width:0%;background:var(--accent)"></div></div>
-          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem" id="pwd-strength-label"></div>
+    <!-- AD MID -->
+    <div class="ad-mid">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="0987654321"
+           data-ad-format="horizontal"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- 1. MOT DE PASSE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon purple">🔑</div>
+          <div class="card-title">Générateur de mot de passe</div>
         </div>
 
-        <!-- 2. Formateur JSON -->
-        <div class="card">
-          <h3><span class="icon">📄</span> Formateur JSON</h3>
-          <label>JSON brut</label>
-          <textarea id="json-in" placeholder='{"clé":"valeur","liste":[1,2,3]}'></textarea>
-          <div class="row">
-            <button onclick="formatJSON()">Formater</button>
-            <button class="secondary" onclick="minifyJSON()">Minifier</button>
-            <button class="secondary" onclick="document.getElementById('json-in').value='';document.getElementById('json-out').textContent=''">Vider</button>
-          </div>
-          <div class="output-box" id="json-out" style="padding-right:4.5rem;white-space:pre;overflow:auto;max-height:200px">
-            <button class="copy-btn" onclick="copyEl('json-out')">Copier</button>
-          </div>
+        <label>Longueur : <span id="pwd-len-label">16</span> caractères</label>
+        <input type="range" min="8" max="64" value="16" id="pwd-length"
+          oninput="document.getElementById('pwd-len-label').textContent=this.value;genPassword()">
+
+        <label>Options</label>
+        <div class="check-row">
+          <label class="check-pill"><input type="checkbox" id="pwd-upper" checked> Majuscules</label>
+          <label class="check-pill"><input type="checkbox" id="pwd-lower" checked> Minuscules</label>
+          <label class="check-pill"><input type="checkbox" id="pwd-digits" checked> Chiffres</label>
+          <label class="check-pill"><input type="checkbox" id="pwd-symbols" checked> Symboles</label>
         </div>
 
-        <!-- 3. Convertisseur couleurs -->
-        <div class="card">
-          <h3><span class="icon">🎨</span> Convertisseur de couleurs</h3>
-          <label>HEX</label>
-          <div class="row">
-            <input type="text" id="color-hex" placeholder="#6c63ff" style="flex:1" oninput="hexToAll()">
-            <div class="color-preview" id="color-preview" style="background:#6c63ff"></div>
-          </div>
-          <label>RGB</label>
-          <input type="text" id="color-rgb" placeholder="108, 99, 255" oninput="rgbToAll()">
-          <label>HSL</label>
-          <input type="text" id="color-hsl" placeholder="243°, 100%, 69%" readonly style="cursor:default">
-          <label>CSS Variable</label>
-          <div class="output-box" id="color-css" style="padding-right:4.5rem">
-            <button class="copy-btn" onclick="copyEl('color-css')">Copier</button>
-          </div>
+        <div class="btn-row">
+          <button class="btn-primary" onclick="genPassword()">Générer</button>
         </div>
 
-        <!-- 4. Encodeur Base64 -->
-        <div class="card">
-          <h3><span class="icon">🔢</span> Encodeur / Décodeur Base64</h3>
-          <label>Texte</label>
-          <textarea id="b64-in" placeholder="Entrez du texte ou du Base64..."></textarea>
-          <div class="row">
-            <button onclick="encodeB64()">Encoder</button>
-            <button class="secondary" onclick="decodeB64()">Décoder</button>
-          </div>
-          <div class="output-box" id="b64-out" style="padding-right:4.5rem">
-            <button class="copy-btn" onclick="copyEl('b64-out')">Copier</button>
-          </div>
+        <div class="output" id="pwd-out">
+          <span id="pwd-text">Cliquez sur Générer</span>
+          <button class="copy-btn" onclick="copyEl('pwd-text')">Copier</button>
         </div>
 
-        <!-- 5. Lorem Ipsum -->
-        <div class="card">
-          <h3><span class="icon">📝</span> Générateur Lorem Ipsum</h3>
-          <div class="row">
-            <div style="flex:1">
-              <label>Paragraphes</label>
-              <input type="number" id="lorem-count" value="2" min="1" max="20">
-            </div>
-            <div style="flex:1">
-              <label>Style</label>
-              <select id="lorem-style">
-                <option value="classic">Classique</option>
-                <option value="short">Phrases courtes</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <button onclick="genLorem()">Générer</button>
-          </div>
-          <div class="output-box" id="lorem-out" style="padding-right:4.5rem;max-height:200px;overflow:auto;white-space:pre-wrap">
-            <button class="copy-btn" onclick="copyEl('lorem-out')">Copier</button>
-          </div>
+        <div class="strength-wrap">
+          <div class="strength-bar"><div class="strength-fill" id="pwd-strength" style="width:0%"></div></div>
+          <div class="strength-label" id="pwd-strength-label"></div>
         </div>
-
-        <!-- 6. Minifier CSS/JS -->
-        <div class="card">
-          <h3><span class="icon">⚡</span> Minifier CSS / JS</h3>
-          <label>Code source</label>
-          <textarea id="minify-in" placeholder="Collez votre CSS ou JS ici..." style="min-height:100px"></textarea>
-          <div class="row">
-            <button onclick="minifyCode()">Minifier</button>
-            <button class="secondary" onclick="document.getElementById('minify-in').value='';document.getElementById('minify-out').textContent=''">Vider</button>
-          </div>
-          <div id="minify-stats" style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem"></div>
-          <div class="output-box" id="minify-out" style="padding-right:4.5rem;max-height:150px;overflow:auto;white-space:pre-wrap">
-            <button class="copy-btn" onclick="copyEl('minify-out')">Copier</button>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Pub milieu (display) -->
-      <div class="ad-banner" style="margin: 0 0 2rem">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-             data-ad-slot="0987654321"
-             data-ad-format="rectangle"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <!-- 2. JSON -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon cyan">📄</div>
+          <div class="card-title">Formateur JSON</div>
+        </div>
+
+        <label>JSON brut</label>
+        <textarea id="json-in" placeholder='{"clé":"valeur","liste":[1,2,3]}'></textarea>
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="formatJSON()">Formater</button>
+          <button class="btn-secondary" onclick="minifyJSON()">Minifier</button>
+          <button class="btn-secondary" onclick="document.getElementById('json-in').value='';document.getElementById('json-out').querySelector('pre').textContent=''">Vider</button>
+        </div>
+
+        <div class="output" id="json-out">
+          <pre id="json-pre"></pre>
+          <button class="copy-btn" onclick="copyPre('json-pre')">Copier</button>
+        </div>
+      </div>
+
+      <!-- 3. COULEURS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon pink">🎨</div>
+          <div class="card-title">Convertisseur de couleurs</div>
+        </div>
+
+        <label>HEX</label>
+        <div class="inline-row">
+          <input type="text" id="color-hex" placeholder="#7c6dfa" oninput="hexToAll()">
+          <div class="color-swatch" id="color-preview" style="background:#7c6dfa"></div>
+        </div>
+
+        <label>RGB</label>
+        <input type="text" id="color-rgb" placeholder="124, 109, 250" oninput="rgbToAll()">
+
+        <label>HSL</label>
+        <input type="text" id="color-hsl" placeholder="245°, 93%, 70%" readonly style="cursor:default;color:var(--muted)">
+
+        <label>Résultat CSS</label>
+        <div class="output" id="color-css">
+          <pre id="color-pre"></pre>
+          <button class="copy-btn" onclick="copyPre('color-pre')">Copier</button>
+        </div>
+      </div>
+
+      <!-- 4. BASE64 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon orange">🔢</div>
+          <div class="card-title">Encodeur / Décodeur Base64</div>
+        </div>
+
+        <label>Texte ou Base64</label>
+        <textarea id="b64-in" placeholder="Entrez du texte ou du Base64..."></textarea>
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="encodeB64()">Encoder →</button>
+          <button class="btn-secondary" onclick="decodeB64()">← Décoder</button>
+        </div>
+
+        <div class="output" id="b64-out">
+          <pre id="b64-pre"></pre>
+          <button class="copy-btn" onclick="copyPre('b64-pre')">Copier</button>
+        </div>
+      </div>
+
+      <!-- 5. LOREM -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon green">📝</div>
+          <div class="card-title">Générateur Lorem Ipsum</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+          <div>
+            <label>Paragraphes</label>
+            <input type="number" id="lorem-count" value="2" min="1" max="20">
+          </div>
+          <div>
+            <label>Style</label>
+            <select id="lorem-style">
+              <option value="classic">Classique</option>
+              <option value="short">Court</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="genLorem()">Générer</button>
+        </div>
+
+        <div class="output" style="max-height:180px;overflow:auto" id="lorem-out">
+          <pre id="lorem-pre"></pre>
+          <button class="copy-btn" onclick="copyPre('lorem-pre')">Copier</button>
+        </div>
+      </div>
+
+      <!-- 6. MINIFIER -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon blue">⚡</div>
+          <div class="card-title">Minifier CSS / JS</div>
+        </div>
+
+        <label>Code source</label>
+        <textarea id="minify-in" placeholder="Collez votre CSS ou JS ici..." style="min-height:100px"></textarea>
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="minifyCode()">Minifier</button>
+          <button class="btn-secondary" onclick="document.getElementById('minify-in').value='';document.getElementById('minify-pre').textContent='';document.getElementById('minify-stat').textContent=''">Vider</button>
+        </div>
+
+        <div id="minify-stat"></div>
+
+        <div class="output" style="max-height:140px;overflow:auto" id="minify-out">
+          <pre id="minify-pre"></pre>
+          <button class="copy-btn" onclick="copyPre('minify-pre')">Copier</button>
+        </div>
       </div>
 
     </div>
-
-    <!-- Sidebar pub (display vertical) -->
-    <div class="sidebar">
-      <div class="ad-side">
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:160px;height:300px"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-             data-ad-slot="1122334455"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
-    </div>
-
   </div>
-</main>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="ad-side">
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:280px"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="1122334455"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+</div>
 
 <footer>
-  &copy; 2026 DevTools Box — Outils gratuits pour développeurs. Aucune donnée stockée.
+  &copy; 2026 DevTools Box &mdash; Aucune donnée stockée &mdash; Tout tourne en local
 </footer>
 
 <script>
-// ===== COPIER =====
+// ── COPY ──
 function copyEl(id) {
   const el = document.getElementById(id);
-  const text = el.innerText.replace('Copier', '').trim();
+  const text = (el.innerText || el.textContent).replace('Copier','').trim();
+  navigator.clipboard.writeText(text).then(() => flash(el.closest('.output').querySelector('.copy-btn')));
+}
+function copyPre(id) {
+  const text = document.getElementById(id).textContent.trim();
   navigator.clipboard.writeText(text).then(() => {
-    const btn = el.querySelector('.copy-btn') || el;
-    const orig = btn.textContent;
-    btn.textContent = 'Copié !';
-    setTimeout(() => btn.textContent = orig, 1500);
+    const btn = document.getElementById(id).closest('.output').querySelector('.copy-btn');
+    flash(btn);
   });
 }
+function flash(btn) {
+  if (!btn) return;
+  const orig = btn.textContent;
+  btn.textContent = 'Copié ✓';
+  btn.style.color = 'var(--success)';
+  setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1600);
+}
 
-// ===== MOT DE PASSE =====
+// ── PASSWORD ──
 function genPassword() {
   const len = +document.getElementById('pwd-length').value;
   const upper = document.getElementById('pwd-upper').checked;
@@ -455,48 +806,37 @@ function genPassword() {
   if (lower) chars += 'abcdefghijklmnopqrstuvwxyz';
   if (digits) chars += '0123456789';
   if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-  if (!chars) { document.getElementById('pwd-text').textContent = 'Sélectionnez au moins une option'; return; }
+  if (!chars) { document.getElementById('pwd-text').textContent = 'Sélectionnez une option'; return; }
 
-  let pwd = '';
   const arr = new Uint32Array(len);
   crypto.getRandomValues(arr);
-  for (let i = 0; i < len; i++) pwd += chars[arr[i] % chars.length];
-
+  const pwd = Array.from(arr, v => chars[v % chars.length]).join('');
   document.getElementById('pwd-text').textContent = pwd;
 
-  // Force
-  let score = 0;
-  if (upper) score++; if (lower) score++; if (digits) score++; if (symbols) score++;
+  let score = [upper, lower, digits, symbols].filter(Boolean).length;
   if (len >= 16) score++; if (len >= 24) score++;
   const pct = Math.min(100, score * 17);
-  const colors = ['#ef4444','#f97316','#eab308','#10b981','#6c63ff'];
+  const colors = ['#f87171','#fb923c','#fbbf24','#34d399','#7c6dfa'];
   const labels = ['Très faible','Faible','Moyen','Fort','Très fort'];
-  const idx = Math.min(4, Math.floor(score * 0.8));
+  const idx = Math.min(4, Math.floor(score * 0.75));
   document.getElementById('pwd-strength').style.width = pct + '%';
   document.getElementById('pwd-strength').style.background = colors[idx];
   document.getElementById('pwd-strength-label').textContent = labels[idx];
 }
 
-// ===== JSON =====
+// ── JSON ──
 function formatJSON() {
   try {
-    const parsed = JSON.parse(document.getElementById('json-in').value);
-    document.getElementById('json-out').childNodes[0].textContent = JSON.stringify(parsed, null, 2);
-  } catch(e) {
-    document.getElementById('json-out').childNodes[0].textContent = 'Erreur : ' + e.message;
-  }
+    document.getElementById('json-pre').textContent = JSON.stringify(JSON.parse(document.getElementById('json-in').value), null, 2);
+  } catch(e) { document.getElementById('json-pre').textContent = '// Erreur : ' + e.message; }
 }
-
 function minifyJSON() {
   try {
-    const parsed = JSON.parse(document.getElementById('json-in').value);
-    document.getElementById('json-out').childNodes[0].textContent = JSON.stringify(parsed);
-  } catch(e) {
-    document.getElementById('json-out').childNodes[0].textContent = 'Erreur : ' + e.message;
-  }
+    document.getElementById('json-pre').textContent = JSON.stringify(JSON.parse(document.getElementById('json-in').value));
+  } catch(e) { document.getElementById('json-pre').textContent = '// Erreur : ' + e.message; }
 }
 
-// ===== COULEURS =====
+// ── COLORS ──
 function hexToAll() {
   let hex = document.getElementById('color-hex').value.trim();
   if (!hex.startsWith('#')) hex = '#' + hex;
@@ -504,11 +844,10 @@ function hexToAll() {
   document.getElementById('color-preview').style.background = hex;
   const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
   document.getElementById('color-rgb').value = `${r}, ${g}, ${b}`;
-  const hsl = rgbToHsl(r,g,b);
-  document.getElementById('color-hsl').value = `${hsl[0]}°, ${hsl[1]}%, ${hsl[2]}%`;
-  document.getElementById('color-css').childNodes[0].textContent = `--color: ${hex};\nrgb(${r}, ${g}, ${b})\nhsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+  const [h,s,l] = rgbToHsl(r,g,b);
+  document.getElementById('color-hsl').value = `${h}°, ${s}%, ${l}%`;
+  document.getElementById('color-pre').textContent = `--color: ${hex};\nrgb(${r}, ${g}, ${b})\nhsl(${h}, ${s}%, ${l}%)`;
 }
-
 function rgbToAll() {
   const parts = document.getElementById('color-rgb').value.split(',').map(x => parseInt(x.trim()));
   if (parts.length !== 3 || parts.some(isNaN)) return;
@@ -516,16 +855,15 @@ function rgbToAll() {
   const hex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
   document.getElementById('color-hex').value = hex;
   document.getElementById('color-preview').style.background = hex;
-  const hsl = rgbToHsl(r,g,b);
-  document.getElementById('color-hsl').value = `${hsl[0]}°, ${hsl[1]}%, ${hsl[2]}%`;
-  document.getElementById('color-css').childNodes[0].textContent = `--color: ${hex};\nrgb(${r}, ${g}, ${b})\nhsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+  const [h,s,l] = rgbToHsl(r,g,b);
+  document.getElementById('color-hsl').value = `${h}°, ${s}%, ${l}%`;
+  document.getElementById('color-pre').textContent = `--color: ${hex};\nrgb(${r}, ${g}, ${b})\nhsl(${h}, ${s}%, ${l}%)`;
 }
-
 function rgbToHsl(r,g,b) {
   r/=255; g/=255; b/=255;
   const max=Math.max(r,g,b), min=Math.min(r,g,b);
-  let h,s,l=(max+min)/2;
-  if(max===min){h=s=0;}else{
+  let h=0,s=0,l=(max+min)/2;
+  if (max !== min) {
     const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
     switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}
     h=Math.round(h*60); s=Math.round(s*100); l=Math.round(l*100);
@@ -533,65 +871,58 @@ function rgbToHsl(r,g,b) {
   return [h,s,l];
 }
 
-// ===== BASE64 =====
+// ── BASE64 ──
 function encodeB64() {
-  try {
-    document.getElementById('b64-out').childNodes[0].textContent = btoa(unescape(encodeURIComponent(document.getElementById('b64-in').value)));
-  } catch(e) { document.getElementById('b64-out').childNodes[0].textContent = 'Erreur : ' + e.message; }
+  try { document.getElementById('b64-pre').textContent = btoa(unescape(encodeURIComponent(document.getElementById('b64-in').value))); }
+  catch(e) { document.getElementById('b64-pre').textContent = 'Erreur : ' + e.message; }
 }
-
 function decodeB64() {
-  try {
-    document.getElementById('b64-out').childNodes[0].textContent = decodeURIComponent(escape(atob(document.getElementById('b64-in').value.trim())));
-  } catch(e) { document.getElementById('b64-out').childNodes[0].textContent = 'Erreur : chaîne Base64 invalide'; }
+  try { document.getElementById('b64-pre').textContent = decodeURIComponent(escape(atob(document.getElementById('b64-in').value.trim()))); }
+  catch(e) { document.getElementById('b64-pre').textContent = 'Base64 invalide'; }
 }
 
-// ===== LOREM IPSUM =====
-const LOREM_SENTENCES = [
+// ── LOREM ──
+const LOREM = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
   "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
   "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-  "Praesent commodo cursus magna, vel scelerisque nisl consectetur.",
-  "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.",
+  "Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
+  "Fusce dapibus tellus ac cursus commodo, tortor mauris condimentum nibh.",
   "Nullam quis risus eget urna mollis ornare vel eu leo.",
   "Cras mattis consectetur purus sit amet fermentum.",
   "Donec sed odio dui, vestibulum ante ipsum primis in faucibus.",
 ];
-
 function genLorem() {
   const count = Math.min(20, Math.max(1, +document.getElementById('lorem-count').value));
-  const style = document.getElementById('lorem-style').value;
-  let result = '';
+  const short = document.getElementById('lorem-style').value === 'short';
+  let out = '';
   for (let i = 0; i < count; i++) {
-    const sentCount = style === 'short' ? 3 : 5;
-    let para = [];
-    for (let j = 0; j < sentCount; j++) {
-      para.push(LOREM_SENTENCES[(i * sentCount + j) % LOREM_SENTENCES.length]);
-    }
-    result += para.join(' ') + '\n\n';
+    const n = short ? 2 : 4;
+    out += Array.from({length:n}, (_,j) => LOREM[(i*n+j) % LOREM.length]).join(' ') + '\n\n';
   }
-  document.getElementById('lorem-out').childNodes[0].textContent = result.trim();
+  document.getElementById('lorem-pre').textContent = out.trim();
 }
 
-// ===== MINIFIER =====
+// ── MINIFY ──
 function minifyCode() {
-  const input = document.getElementById('minify-in').value;
-  const original = input.length;
-  let result = input
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\/\/[^\n]*/g, '')
-    .replace(/\s*([{}:;,>~+])\s*/g, '$1')
-    .replace(/\s*\n\s*/g, '')
-    .replace(/\s{2,}/g, ' ')
+  const src = document.getElementById('minify-in').value;
+  const orig = src.length;
+  const result = src
+    .replace(/\/\*[\s\S]*?\*\//g,'')
+    .replace(/\/\/[^\n]*/g,'')
+    .replace(/\s*([{}:;,>~+])\s*/g,'$1')
+    .replace(/\s*\n\s*/g,'')
+    .replace(/\s{2,}/g,' ')
     .trim();
-  const saved = original - result.length;
-  const pct = original ? Math.round(saved / original * 100) : 0;
-  document.getElementById('minify-out').childNodes[0].textContent = result;
-  document.getElementById('minify-stats').textContent = original
-    ? `${original} → ${result.length} octets (-${saved} octets, -${pct}%)`
-    : '';
+  document.getElementById('minify-pre').textContent = result;
+  if (orig) {
+    const saved = orig - result.length;
+    const pct = Math.round(saved/orig*100);
+    const chip = document.getElementById('minify-stat');
+    chip.innerHTML = `<span class="stat-chip">-${saved} octets (-${pct}%)</span>`;
+  }
 }
 
 // Init
